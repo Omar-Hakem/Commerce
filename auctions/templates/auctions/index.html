@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>All Listings</h2>
+{% for listing in allListings %}
+<a class="view-listing" href="{% url 'viewListing' listing.id %}">
+
+    <div class="listingItem">
+
+        <div>
+            <img class="listingImage" src="{{listing.image_url}}" alt="There Is No Image Provided For This Listing">
+        </div>
+        <div class="listingInfo">
+            <h3>{{listing.title}}</h3><br>
+            <h5 class="price"> <strong>Price:</strong> ${{listing.startingBid}}</h5><br>
+            <h5>{{listing.description}}</h5><br>
+            <p>created {{listing.dateCreated}}</p>
+        </div>
+    </div>
+</a>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+<div class="mainHeading">
+  <div>
+    <h2>Listing: {{ listing.title }}</h2>
+  </div>
+  <div>
+    {% if closeAuction %}
+    <a class="closeAuction" href="{% url 'closeAuction' listing.id %}">Close Auction For This Listing</a>
+    {% endif %}
+  </div>
+</div>
+<div>
+  {% if winner == request.user %}
+  <h3>Congratulation {{winner}} , You Won The Auction For This Listing!!!</h3>
+  {% endif %}
+</div>
+{% if listing.status %}
+{% if watchlist %}
+<a class="watchlistButton" href="{% url 'RemoveFromWatchlist' listing.id %}">Remove From Watchlist</a>
+{% else %}
+<a class="watchlistButton" href="{% url 'addToWatchlist' listing.id %}">Watchlist</a>
+{% endif %}
+{% endif %}
+<br>
+
+<div>
+  <img src="{{listing.image_url}}" alt="There Is No Image Provided For This Listing">
+</div>
+<h5>{{listing.description}}</h5> <br>
+{% if listing.status %}
+{% if listing.currentBid %}
+<h3>${{listing.currentBid}}</h3>
+{% else %}
+<h3>${{listing.startingBid}}</h3>
+{% endif %}
+{% if bidReview %}
+<h4>{{ bidReview }}</h4>
+{% endif %}
+<form action="{% url 'viewListing' listing.id %}" method="post">
+  {% csrf_token %}
+  {{form.as_p}}
+  <input class="bid" type="submit" value="Place Bid">
+</form>
+{% endif %}
+<br>
+<div class="commentArea">
+  <h4>Comments:</h4>
+  <ul>
+    {% if comments %}
+    {% for comment in comments %}
+    <li> <b>{{comment.user}}</b> : {{comment.content}}</li>
+    {% endfor %}
+    {% else %}
+    <li>No Comments For This Listing Yet!</li>
+    {% endif %}
+  </ul>
+  <form action="{% url 'addComment' listing.id %}" method="post">
+    {% csrf_token %}
+    {{cform.as_p}}
+    <input type="submit" hidden="True">
+  </form>
+</div>
+
+<h4>Details:</h4>
+<ul>
+  <li>Listed by: {{listing.user}}</li>
+  <li>Category:
+    {% for category in categories %}
+    "{{category}}"
+    {% endfor %}
+  </li>
+</ul>
+{% endblock %}
