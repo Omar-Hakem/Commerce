@@ -35,7 +35,7 @@
   ##### ``` cd Commerce ```
   ##### ``` python -m venv venv ```
   ##### ``` venv/Scripts/activate ```
-  ##### ``` pip install -e ```
+  ##### ``` pip install -e . ```
   ##### ``` python manage.py runserver ```
 - then open your browser and enter the following url:
   ##### localhost:8000
